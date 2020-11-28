@@ -11,7 +11,7 @@ kellyname = '111-1727-9111_202011231612'
 
 import os
 import numpy as np
-from numba import njit
+#from numba import njit
 
 def readData(filename, forceReload = False):
     npyName = filename + '.npy'
@@ -108,16 +108,13 @@ def transArray2Dict(arrayData):
         dictData[arrayData[i][0]] = arrayData[i]
     return dictData
 
-def checkMutation(arrayD1, arrayD2, arrayD3):
+def checkMutation(arrayD1, arrayD2, arrayD3, dictD1, dictD2, dictD3):
     listMutation = []
     countMissing = 0
     countCheck = 0
-    dictD1 = transArray2Dict(arrayD1)
-    dictD2 = transArray2Dict(arrayD2)
-    dictD3 = transArray2Dict(arrayD3)
     if not (len(dictD1) == len(dictD2) and len(dictD1) == len(dictD3)):
         print('Data Len Error!')
-        return listMutation
+        return countMissing, countCheck, listMutation
     print('checkMutation len:', len(dictD1))
     for rsid in dictD1:
         if dictD1[rsid][1] == 'Y' or dictD1[rsid][1] == 'X' or dictD1[rsid][1] == 'MT' :
@@ -139,6 +136,10 @@ def main():
 
     kellydata = readData(kellyname)
     print('kellydata.shape', kellydata.shape)
+
+    dictDataRiver = transArray2Dict(riverdata)
+    dictDataRyan  = transArray2Dict(ryandata)
+    dictDataKelly = transArray2Dict(kellydata)
 
     #statChromosome(riverdata)
 
@@ -200,7 +201,7 @@ def main():
     numberTotalKelly, listMissKelly= checkMiss(kellydata, female=True)
     print('Kelly Miss: {}/{}={}%'.format(len(listMissKelly), numberTotalKelly, round(100*len(listMissKelly)/numberTotalKelly,2)))
 
-    numberMissing, numberCheck, listMutation = checkMutation(ryandata, riverdata, kellydata)
+    numberMissing, numberCheck, listMutation = checkMutation(ryandata, riverdata, kellydata, dictDataRyan, dictDataRiver, dictDataKelly)
     print('Missing: {} , Mutate: {}/{}={}%'.format(numberMissing, len(listMutation), numberCheck, round(100*len(listMutation)/numberCheck,2)))
 
     #for mutation in listMutation:
