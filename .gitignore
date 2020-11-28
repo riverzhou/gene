@@ -1,0 +1,11 @@
+workspace.code-workspace
+*.txt
+*.npy
+*.stats
+*.swp
+*~
+*.md
+*.pdf
+*.png
+*.html
+
